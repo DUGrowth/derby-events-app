@@ -59,6 +59,38 @@ docker-compose exec backend npm run scheduler
 The frontend will be served at:
 `https://dugrowth.github.io/derby-events-app/`
 
+## Free Hosting Recommendation (Render + Supabase)
+
+Backend (Render):
+
+1. Create a new **Web Service** on Render from this repo.
+2. Set **Root Directory** to `backend`.
+3. Build Command:
+   ```
+   npm install && npm run build
+   ```
+4. Start Command:
+   ```
+   npm run start
+   ```
+5. Environment variables:
+   - `DATABASE_URL` = Supabase direct connection string (preferred)
+   - `REDIS_URL` = `redis://localhost:6379` (unused if you only use cron trigger)
+   - `EVENTBRITE_API_TOKEN`
+   - `TICKETMASTER_API_KEY`
+   - `DERBY_LATITUDE=52.9225`
+   - `DERBY_LONGITUDE=-1.4767`
+   - `DERBY_SEARCH_RADIUS_MI=10`
+   - `FRONTEND_URL=https://dugrowth.github.io/derby-events-app`
+   - `ADMIN_SYNC_TOKEN` = a long random string
+
+Sync scheduling (GitHub Actions):
+
+1. Add these GitHub secrets:
+   - `SYNC_TRIGGER_URL` = `https://<your-render-service>.onrender.com/api/sync/trigger`
+   - `ADMIN_SYNC_TOKEN` = same value as backend
+2. The workflow in `.github/workflows/sync.yml` will call it every 6 hours.
+
 ## API Endpoints
 
 - `GET /api/events`
