@@ -12,6 +12,7 @@ import eventsRouter from './routes/events';
 import submissionsRouter from './routes/submissions';
 import venuesRouter from './routes/venues';
 import syncRouter from './routes/sync';
+import webhooksRouter from './routes/webhooks';
 
 const app = express();
 
@@ -30,6 +31,7 @@ app.use('/api/categories', categoriesRouter);
 app.use('/api/venues', venuesRouter);
 app.use('/api/submissions', submissionsRouter);
 app.use('/api/sync', syncRouter);
+app.use('/api/webhooks', webhooksRouter);
 
 app.use(errorHandler);
 
