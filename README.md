@@ -46,6 +46,19 @@ docker-compose exec backend npm run scheduler
 
 6. Visit UI: http://localhost:3000
 
+## GitHub Pages (Frontend)
+
+1. Create GitHub Actions secrets in the repo:
+   - `VITE_API_URL` = public backend URL (e.g. https://your-api.example.com/api)
+   - `VITE_MAPBOX_TOKEN` = Mapbox token
+
+2. Push to `main`. The workflow builds `frontend/` and deploys to Pages.
+
+3. In GitHub repo settings, set Pages source to **GitHub Actions** if not already enabled.
+
+The frontend will be served at:
+`https://dugrowth.github.io/derby-events-app/`
+
 ## API Endpoints
 
 - `GET /api/events`

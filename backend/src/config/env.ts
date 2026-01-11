@@ -26,7 +26,7 @@ export const env = {
   nodeEnv: process.env.NODE_ENV ?? 'development',
   port: numberEnv('PORT', 3001),
   databaseUrl: requireEnv('DATABASE_URL'),
-  redisUrl: requireEnv('REDIS_URL'),
+  redisUrl: process.env.REDIS_URL ?? 'redis://localhost:6379',
   eventbriteToken: process.env.EVENTBRITE_API_TOKEN ?? '',
   ticketmasterKey: process.env.TICKETMASTER_API_KEY ?? '',
   derbyLatitude: numberEnv('DERBY_LATITUDE', 52.9225),
