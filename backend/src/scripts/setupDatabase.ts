@@ -12,6 +12,12 @@ const setup = async (): Promise<void> => {
   await sequelize.query('CREATE INDEX IF NOT EXISTS idx_events_source ON events(source_id)');
   await sequelize.query('CREATE INDEX IF NOT EXISTS idx_events_status ON events(status)');
   await sequelize.query('CREATE INDEX IF NOT EXISTS idx_events_search ON events USING GIN(search_vector)');
+  await sequelize.query('CREATE INDEX IF NOT EXISTS idx_bus_stops_location ON bus_stops USING GIST(location)');
+  await sequelize.query('CREATE INDEX IF NOT EXISTS idx_roadworks_location ON roadworks USING GIST(location)');
+  await sequelize.query('CREATE INDEX IF NOT EXISTS idx_air_quality_location ON air_quality USING GIST(location)');
+  await sequelize.query('CREATE INDEX IF NOT EXISTS idx_food_hygiene_location ON food_hygiene_ratings USING GIST(location)');
+  await sequelize.query('CREATE INDEX IF NOT EXISTS idx_crime_incidents_location ON crime_incidents USING GIST(location)');
+  await sequelize.query('CREATE INDEX IF NOT EXISTS idx_cameras_location ON cameras USING GIST(location)');
 
   await sequelize.query(`
     CREATE OR REPLACE FUNCTION events_search_trigger() RETURNS trigger AS $$
