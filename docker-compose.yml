@@ -1,0 +1,50 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgis/postgis:15-3.3
+    environment:
+      POSTGRES_DB: derby_events
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "6379:6379"
+
+  backend:
+    build: ./backend
+    ports:
+      - "3001:3001"
+    environment:
+      DATABASE_URL: postgresql://postgres:password@postgres:5432/derby_events
+      REDIS_URL: redis://redis:6379
+      EVENTBRITE_API_TOKEN: ${EVENTBRITE_API_TOKEN}
+      TICKETMASTER_API_KEY: ${TICKETMASTER_API_KEY}
+      DERBY_LATITUDE: 52.9225
+      DERBY_LONGITUDE: -1.4767
+      DERBY_SEARCH_RADIUS_MI: 10
+      FRONTEND_URL: http://localhost:3000
+    depends_on:
+      - postgres
+      - redis
+    volumes:
+      - ./backend:/app
+
+  frontend:
+    build: ./frontend
+    ports:
+      - "3000:3000"
+    environment:
+      VITE_API_URL: http://localhost:3001/api
+      VITE_MAPBOX_TOKEN: ${VITE_MAPBOX_TOKEN}
+    depends_on:
+      - backend
+
+volumes:
+  postgres_data:
